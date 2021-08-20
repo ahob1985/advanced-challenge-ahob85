@@ -18,7 +18,18 @@ public class AdvancedChallenge
      * canBalance([10, 10]) → true
      */
     public static boolean canBalance(int[] nums){
-
+        int leftSum = 0;
+        for(int i = 0; i < nums.length; i++) {
+            leftSum += nums[i];
+            int rightSum = 0;
+            for(int j = i + 1; j < nums.length; j++) {
+                rightSum += nums[j];
+            }
+            if(leftSum == rightSum) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -33,7 +44,17 @@ public class AdvancedChallenge
      * maxSpan([1, 4, 2, 1, 4, 4, 4]) → 6
      */
     public static int maxSpan(int[] nums) {
-
+        int max = 0;
+        for(int i = 0; i < nums.length; i++) {
+            int span = 1;
+            for(int j = i; j < nums.length; j++) {
+                if(nums[i] == nums[j] && span > max) {
+                    max = span;
+                }
+                span++;
+            }
+        }
+        return max;
     }
 
     /**
@@ -48,7 +69,21 @@ public class AdvancedChallenge
      * linearIn([1, 2, 4, 4, 6], [2, 4]) → true
      */
     public static boolean linearIn(int[] outer, int[] inner){
-
+        if(inner.length == 0) {
+            return true;
+        }
+        int outerID = 0;
+        int innerID = 0;
+        while(outerID < outer.length) {
+            if(outer[outerID] == inner[innerID]) {
+                innerID++;
+                if(innerID == inner.length) {
+                    return true;
+                }
+            }
+            outerID++;
+        }
+        return false;
     }
 
     /**
@@ -65,7 +100,31 @@ public class AdvancedChallenge
      * fix45([1, 4, 1, 5, 5, 4, 1]) → [1, 4, 5, 1, 1, 4, 5]
      */
     public static int[] fix45(int[] nums){
-
+        int[] fix = nums.clone();
+        for(int i = fix.length - 1; i > 0; i--) {
+            if(fix[i] == 4 && fix[i + 1] != 5) {
+                boolean foundFive = false;
+                for(int j = i - 1; j >= 0 && !foundFive; j--) {
+                    if(fix[j] == 5) {
+                        int five = fix[j];
+                        fix[j] = fix[i + 1];
+                        fix[i + 1] = five;
+                        foundFive = true;
+                    }
+                }
+            } else if(fix[i] == 5 && fix[i - 1] != 4) {
+                boolean foundFour = false;
+                for(int j = i - 1; j >= 0 && !foundFour; j--) {
+                    if(fix[j] == 4 && fix[j + 1] != 5) {
+                        int five = fix[i];
+                        fix[i] = fix[j + 1];
+                        fix[j + 1] = five;
+                        foundFour = true;
+                    }
+                }
+            }
+        }
+        return fix;
     }
 
     /**
@@ -79,6 +138,21 @@ public class AdvancedChallenge
      * squareUp(4) → [0, 0, 0, 1, 0, 0, 2, 1, 0, 3, 2, 1, 4, 3, 2, 1]
      */
     public static int[] squareUp(int n){
-
+        int mod = n + 1;
+        int current = 1;
+        int[] retArray = new int[n * n];
+        for(int i = retArray.length - 1; i >= 0; i--) {
+            if(current <= mod) {
+                retArray[i] = current % mod;
+            } else {
+                retArray[i] = 0;
+            }
+            current++;
+            if(current > n) {
+                current = 1;
+                mod--;
+            }
+        }
+        return retArray;
     }
 }
